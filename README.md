@@ -1,4 +1,3 @@
 # Web_Tech
-This repo is all abut the web tech lab course codes. 
 
-#All the lab files and folders will publish here one after one....
+## Hello world... Date: 21-06-2026
