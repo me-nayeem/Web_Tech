@@ -56,7 +56,7 @@ func handleShorten(baseURL string) http.HandlerFunc {
 
 		mu.Lock()
 		var code string
-		for i := 0; i < 5; i++ {
+		for i := 0; i < 1000; i++ {
 			code = randomCode()
 			if _, exists := urls[code]; !exists {
 				break
