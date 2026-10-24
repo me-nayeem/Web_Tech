@@ -43,4 +43,4 @@ func Load() (*Config, error) {
 		return nil, errors.New("missing environment variables: " + strings.Join(missing, ", "))
 	}
 	return c, nil
-}
+}.
