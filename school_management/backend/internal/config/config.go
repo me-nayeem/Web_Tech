@@ -1,4 +1,4 @@
-// Package config reads environment variables.
+
 package config
 
 import (
@@ -9,14 +9,13 @@ import (
 
 type Config struct {
 	DatabaseURL string
-	SupabaseURL string // without trailing slash
-	JWTSecret   string // only for projects that sign tokens with HS256
-	FrontendURL string // allowed CORS origin, without trailing slash
+	SupabaseURL string
+	JWTSecret   string 
+	FrontendURL string 
 	Port        string
 }
 
-// Load reads and checks the environment. It returns an error that names every
-// missing variable so the problem is clear at startup.
+
 func Load() (*Config, error) {
 	c := &Config{
 		DatabaseURL: strings.TrimSpace(os.Getenv("DATABASE_URL")),

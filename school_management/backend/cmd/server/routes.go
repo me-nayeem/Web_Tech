@@ -13,7 +13,7 @@ func notFound(w http.ResponseWriter, _ *http.Request) {
 	httpx.Error(w, http.StatusNotFound, httpx.CodeNotFound, "route not found")
 }
 
-// adminRoutes holds every /api/admin route (the role check is added by the caller, R5).
+
 func adminRoutes(h *handlers.Handlers) http.Handler {
 	m := http.NewServeMux()
 	m.HandleFunc("GET /api/admin/users", h.AdminUsers)
@@ -44,7 +44,7 @@ func adminRoutes(h *handlers.Handlers) http.Handler {
 	return m
 }
 
-// teacherRoutes holds every /api/teacher route (the role check is added by the caller, R5).
+
 func teacherRoutes(h *handlers.Handlers) http.Handler {
 	m := http.NewServeMux()
 	m.HandleFunc("GET /api/teacher/assignments", h.TeacherAssignments)
@@ -55,7 +55,6 @@ func teacherRoutes(h *handlers.Handlers) http.Handler {
 	return m
 }
 
-// studentRoutes holds every /api/student route (the role check is added by the caller, R5).
 func studentRoutes(h *handlers.Handlers) http.Handler {
 	m := http.NewServeMux()
 	m.HandleFunc("GET /api/student/profile", h.StudentProfile)
@@ -66,11 +65,6 @@ func studentRoutes(h *handlers.Handlers) http.Handler {
 	return m
 }
 
-// newRouter builds the whole HTTP handler.
-//
-// Order of checks for every /api route: CORS -> token (401) -> user loaded
-// from the database -> onboarding gate (403 ONBOARDING_REQUIRED) -> role (403).
-// Only GET /health is public.
 func newRouter(frontendURL string, verifier middleware.TokenVerifier, store middleware.UserStore, h *handlers.Handlers) http.Handler {
 	api := http.NewServeMux()
 	api.HandleFunc("GET /api/me", h.Me)
@@ -78,8 +72,7 @@ func newRouter(frontendURL string, verifier middleware.TokenVerifier, store midd
 	api.HandleFunc("GET /api/classes", h.Classes)
 	api.HandleFunc("GET /api/subjects", h.Subjects)
 
-	// Role groups (R5). The real routes are added in later phases; until then
-	// a wrong role already gets 403 and the right role gets 404.
+	
 	api.Handle("/api/admin/", middleware.RequireRole(db.RoleAdmin)(adminRoutes(h)))
 	api.Handle("/api/teacher/", middleware.RequireRole(db.RoleTeacher)(teacherRoutes(h)))
 	api.Handle("/api/student/", middleware.RequireRole(db.RoleStudent)(studentRoutes(h)))
